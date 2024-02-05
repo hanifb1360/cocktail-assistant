@@ -207,6 +207,41 @@ const handlePrintShoppingList = () => {
   .toast-message:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
+
+
+  /* Mobile responsiveness */
+  @media only screen and (max-width: 600px) {
+    .main-content {
+      flex-direction: column;
+    }
+
+    .cocktail-results {
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  /* Tablet responsiveness */
+  @media only screen and (min-width: 601px) and (max-width: 1024px) {
+    .main-content {
+      flex-direction: column;
+    }
+
+    .cocktail-results {
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+
 </style>
 <div>
 <div>

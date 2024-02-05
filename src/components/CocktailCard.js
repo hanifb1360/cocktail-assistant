@@ -68,6 +68,36 @@ function CocktailCard({ cocktail, onAdd }) {
         background-color: #bdc3c7;
         cursor: not-allowed;
       }
+
+      /* Mobile responsiveness */
+      @media only screen and (max-width: 600px) {
+        .cocktail-card {
+          flex-direction: column;
+          align-items: center;
+        }
+    
+        .thumbnail {
+          max-width: 100%; /* Adjust the width as needed */
+          max-height: auto; /* Allow the height to adjust according to the width */
+          margin-right: 0;
+          margin-bottom: 10px;
+        }
+    
+        .content {
+          text-align: center;
+        }
+    
+        .add-button {
+          align-self: center;
+          margin-left: 0;
+        }
+      }
+    
+      /* Tablet responsiveness */
+      @media only screen and (min-width: 601px) and (max-width: 1024px) {
+        /* Add specific styles for tablets if needed */
+      }
+
     </style>
 
     <div class="cocktail-card">
