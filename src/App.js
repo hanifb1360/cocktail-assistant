@@ -6,12 +6,12 @@ import "./components/ToastMessage.js";
 import { useCocktailSearch } from "./services/CocktailAPI.js";
 
 function App() {
-  // State to manage search results and shopping list
   const [query, setQuery] = useState("margarita");
   const { cocktails, loading, error } = useCocktailSearch(query);
   const [shoppingList, setShoppingList] = useState([]);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("");
+  const [componentMounted, setComponentMounted] = useState(false);
   
 
   // Function to handle cocktail search
@@ -19,35 +19,43 @@ function App() {
     setQuery(newQuery);
     setToastMessage("Searching...");
     setToastType("searching");
-   };
+  };
 
-   useEffect(() => {
-    if (cocktails.length === 0) {
-       setToastMessage("No results found.");
-       setToastType("noResultsFound");
-    } else {
-       setToastMessage("Here are the results.");
-       setToastType("resultsFound");
+  useEffect(() => {
+    // This code will run after the initial render (component mount)
+    setComponentMounted(true);
+  }, []);
+
+  useEffect(() => {
+
+    // It ensures that the initial toast messages won't be displayed when the app starts, regardless of the search query.
+
+    if (componentMounted && query !== "margarita") {
+      if (cocktails.length === 0) {
+        setToastMessage("No results found.");
+        setToastType("noResultsFound");
+      } else {
+        setToastMessage("Here are the results.");
+        setToastType("resultsFound");
+      }
     }
-   }, [cocktails]);
+  }, [componentMounted, query, cocktails]);
+
 
 // Function to handle adding a cocktail to the shopping list
 const handleAddToShoppingList = (cocktail) => {
+
   // Extracts ingredients from the cocktail
   const ingredients = Object.keys(cocktail)
     .filter((key) => key.startsWith("strIngredient") && cocktail[key])
     .map((key) => cocktail[key]);
 
-  // Updates shoppingList state
+// Updates shoppingList state
   setShoppingList((prevList) => [...prevList, ...ingredients]);
 
-  
-  setToastMessage(
-    `Cocktail "${cocktail.strDrink}" ingredients added to shopping list.`
-  );
+  setToastMessage(`Cocktail "${cocktail.strDrink}" ingredients added to shopping list.`);
   setToastType("addedToShoppingList");
 };
-
 
 
   // Function to handle deleting an ingredient from the shopping list
@@ -93,9 +101,7 @@ const handlePrintShoppingList = () => {
   `);
   printWindow.document.close();
 
-  // Display toast message for printing
-  setToastMessage("Printing shopping list...");
-  setToastType("printingShoppingList");
+
 };
 
 
@@ -202,45 +208,42 @@ const handlePrintShoppingList = () => {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
 </style>
-    <div>
-      <div>
-        <div id="header">
-          
-          <search-bar .onSearch=${handleSearch}></search-bar>
-        </div>
-
-        <div>
-          <div class="main-content">
-            <div class="cocktail-results">
-              ${loading
-                ? html`<p>Loading...</p>`
-                : error
-                ? html`<p>Error: ${error}</p>`
-                : cocktails.map(
-                    (cocktail) => html`<cocktail-card
-                      .cocktail=${cocktail}
-                      .onAdd=${() => handleAddToShoppingList(cocktail)}
-                    ></cocktail-card>`
-                  )}
-            </div>
-
-            <div class="sidebar">
-              <shopping-list
-                .ingredients=${shoppingList}
-                .onDelete=${handleDeleteFromShoppingList}
-              ></shopping-list>
-              <button @click=${handlePrintShoppingList}>
-                Print Shopping List
-              </button>
-            </div>
-          </div>
-        </div>
+<div>
+<div>
+  <div id="header">
+    <search-bar .onSearch=${handleSearch}></search-bar>
+  </div>
+  <div>
+    <div class="main-content">
+      <div class="cocktail-results">
+        ${loading
+          ? html`<p>Loading...</p>`
+          : error
+          ? html`<p>Error: ${error}</p>`
+          : cocktails.map(
+              (cocktail) => html`<cocktail-card
+                .cocktail=${cocktail}
+                .onAdd=${() => handleAddToShoppingList(cocktail)}
+              ></cocktail-card>`
+            )}
       </div>
-      <toast-message
-        .message=${toastMessage}
-        .type=${toastType}
-      ></toast-message>
+      <div class="sidebar">
+        <shopping-list
+          .ingredients=${shoppingList}
+          .onDelete=${handleDeleteFromShoppingList}
+        ></shopping-list>
+        <button @click=${handlePrintShoppingList}>
+          Print Shopping List
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+<toast-message
+  .message=${toastMessage}
+  .type=${toastType}
+></toast-message>
+</div>
   `;
 }
 
