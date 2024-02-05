@@ -10,8 +10,7 @@
   "author": "Hanif Bahari",
   "license": "ISC",
   "dependencies": {
-    "haunted": "^5.0.0",
-    "lit-html": "^3.1.2"
+    
   },
   "devDependencies": {
    
