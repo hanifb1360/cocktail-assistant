@@ -11,7 +11,8 @@ function App() {
   const [shoppingList, setShoppingList] = useState([]);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("");
-  const [componentMounted, setComponentMounted] = useState(false);
+  
+  
   
 
   // Function to handle cocktail search
@@ -21,16 +22,13 @@ function App() {
     setToastType("searching");
   };
 
-  useEffect(() => {
-    // This code will run after the initial render (component mount)
-    setComponentMounted(true);
-  }, []);
+ 
 
   useEffect(() => {
 
     // It ensures that the initial toast messages won't be displayed when the app starts, regardless of the search query.
 
-    if (componentMounted && query !== "margarita") {
+    if ( query !== "margarita") {
       if (cocktails.length === 0) {
         setToastMessage("No results found.");
         setToastType("noResultsFound");
@@ -39,7 +37,7 @@ function App() {
         setToastType("resultsFound");
       }
     }
-  }, [componentMounted, query, cocktails]);
+  }, [ query, cocktails]);
 
 
 // Function to handle adding a cocktail to the shopping list
