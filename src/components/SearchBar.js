@@ -1,10 +1,12 @@
-import { html, component, useState } from 'https://cdn.pika.dev/haunted';
+import { html, component, useState, useEffect } from 'https://cdn.pika.dev/haunted';
 
 function SearchBar({ onSearch }) {
   const [query, setQuery] = useState('');
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
 
   const handleChange = event => {
     setQuery(event.target.value);
+    setShowPlaceholder(false); // Hide the placeholder when the user starts typing
   };
 
   const handleSubmit = async event => {
@@ -13,6 +15,11 @@ function SearchBar({ onSearch }) {
     // It calls the onSearch callback, which should fetch data using the provided query
     await onSearch(query);
   };
+
+  // Use useEffect to reset the showPlaceholder state when the component is initially rendered
+  useEffect(() => {
+    setShowPlaceholder(true);
+  }, []);
 
   return html`
     <style>
@@ -53,7 +60,7 @@ function SearchBar({ onSearch }) {
     
     <div class="search-bar">
       <form @submit=${handleSubmit}>
-        <input class="search-input" type="text" .value=${query} @input=${handleChange} placeholder="Margarita" />
+        <input class="search-input" type="text" .value=${query} @input=${handleChange} placeholder=${showPlaceholder ? 'Margarita' : ''} />
         <button class="search-button" type="submit">Search</button>
       </form>
     </div>
