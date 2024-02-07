@@ -6,7 +6,7 @@ function SearchBar({ onSearch }) {
 
   const handleChange = event => {
     setQuery(event.target.value);
-    setShowPlaceholder(false); // Hide the placeholder when the user starts typing
+    setShowPlaceholder(false); // It hides the placeholder when the user starts typing
   };
 
   const handleSubmit = async event => {
@@ -16,9 +16,11 @@ function SearchBar({ onSearch }) {
     await onSearch(query);
   };
 
-  // Use useEffect to reset the showPlaceholder state when the component is initially rendered
+  // This useEffect resets the showPlaceholder state when the component is initially rendered
+  
   useEffect(() => {
     setShowPlaceholder(true);
+    // since the dependency array is empty, there are no dependencies, and the effect runs only once.
   }, []);
 
   return html`
