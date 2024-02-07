@@ -7,6 +7,7 @@ import { useCocktailSearch } from "./services/CocktailAPI.js";
 
 function App() {
   const [query, setQuery] = useState("margarita");
+  const [isInitialSearch, setIsInitialSearch] = useState(true);
   const { cocktails, loading, error } = useCocktailSearch(query);
   const [shoppingList, setShoppingList] = useState([]);
   const [toastMessage, setToastMessage] = useState("");
@@ -17,6 +18,7 @@ function App() {
 
   // Function to handle cocktail search
   const handleSearch = (newQuery) => {
+    setIsInitialSearch(false); // Update the flag when a new search is initiated
     setQuery(newQuery);
     setToastMessage("Searching...");
     setToastType("searching");
@@ -24,11 +26,12 @@ function App() {
 
  
 
+
+  // It displays toast messages based on the results of the cocktail search
   useEffect(() => {
 
     // It ensures that the initial toast messages won't be displayed when the app starts, regardless of the search query.
-
-    if ( query !== "margarita") {
+    if (!isInitialSearch) {
       if (cocktails.length === 0) {
         setToastMessage("No results found.");
         setToastType("noResultsFound");
@@ -37,7 +40,7 @@ function App() {
         setToastType("resultsFound");
       }
     }
-  }, [ query, cocktails]);
+  }, [query, cocktails, isInitialSearch]);
 
 
 // Function to handle adding a cocktail to the shopping list
