@@ -52,7 +52,10 @@ const handleAddToShoppingList = (cocktail) => {
     .map((key) => cocktail[key]);
 
 // Updates shoppingList state
-  setShoppingList((prevList) => [...prevList, ...ingredients]);
+//   setShoppingList((prevList) => [...prevList, ...ingredients]);
+
+  // Alternative to using spread operator
+  setShoppingList((prevList) => prevList.concat(ingredients));
 
   setToastMessage(`Cocktail "${cocktail.strDrink}" ingredients added to shopping list.`);
   setToastType("addedToShoppingList");

@@ -3,6 +3,11 @@ import { html, component, useState } from 'https://cdn.pika.dev/haunted';
 function CocktailCard({ cocktail, onAdd }) {
   const [added, setAdded] = useState(false);
 
+  // when ingredients are removed from the shopping list, the button will become clickable again.
+  // useEffect(() => {
+  //   setAdded(false);
+  // }, [onAdd]);
+
   const handleAdd = () => {
     onAdd(cocktail);
     setAdded(true);
