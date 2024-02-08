@@ -75,32 +75,18 @@ setToastType("addedToShoppingList");
 
   // Function to handle deleting an ingredient from the shopping list
   const handleDeleteFromShoppingList = (ingredient) => {
-    const deletedIngredients = [];
-
-    const newShoppingList = shoppingList.filter((item) => {
-      if (item === ingredient) {
-        deletedIngredients.push(item);
-        return false; // Filters out the deleted ingredient
-      }
-      return true; // Keeps other ingredients in the list
-    });
-
+    const newShoppingList = shoppingList.filter((item) => item !== ingredient);
+  
     setShoppingList(newShoppingList);
-
-    // Displays toast message for each deleted ingredient
-    deletedIngredients.forEach((deletedIngredient) => {
-      setToastMessage(
-        `Ingredient "${deletedIngredient}" removed from shopping list.`
-      );
-      setToastType("removedFromShoppingList");
-
-
-      
-    });
+  
+    // Display toast message for the deleted ingredient
+    setToastMessage(`Ingredient "${ingredient}" removed from shopping list.`);
+    setToastType("removedFromShoppingList");
   };
+  
 
   // Function to handle printing the shopping list
-const handlePrintShoppingList = () => {
+  const handlePrintShoppingList = () => {
   // Creates a string representation of the shopping list
   const shoppingListString = shoppingList.join('\n');
 
