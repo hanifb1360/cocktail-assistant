@@ -9,10 +9,16 @@ function App() {
   const [query, setQuery] = useState("margarita");
   const [isInitialSearch, setIsInitialSearch] = useState(true);
   const { cocktails, loading, error } = useCocktailSearch(query);
-  const [shoppingList, setShoppingList] = useState([]);
+  const [shoppingList, setShoppingList] = useState(() => {
+    const storedList = localStorage.getItem('shoppingList');
+    return storedList ? JSON.parse(storedList) : [];
+  });
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("");
   
+  useEffect(() => {
+    localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+  }, [shoppingList]);
   
   
 
@@ -51,14 +57,19 @@ const handleAddToShoppingList = (cocktail) => {
     .filter((key) => key.startsWith("strIngredient") && cocktail[key])
     .map((key) => cocktail[key]);
 
-// Updates shoppingList state
-//   setShoppingList((prevList) => [...prevList, ...ingredients]);
+// Check if any ingredients are already in the list and update accordingly
+setShoppingList((prevList) => {
+  const updatedList = [...prevList];
+  ingredients.forEach((ingredient) => {
+    if (!updatedList.includes(ingredient)) {
+      updatedList.push(ingredient);
+    }
+  });
+  return updatedList;
+});
 
-  // Alternative to using spread operator
-  setShoppingList((prevList) => prevList.concat(ingredients));
-
-  setToastMessage(`Cocktail "${cocktail.strDrink}" ingredients added to shopping list.`);
-  setToastType("addedToShoppingList");
+setToastMessage(`Cocktail "${cocktail.strDrink}" ingredients added to shopping list.`);
+setToastType("addedToShoppingList");
 };
 
 
@@ -82,6 +93,9 @@ const handleAddToShoppingList = (cocktail) => {
         `Ingredient "${deletedIngredient}" removed from shopping list.`
       );
       setToastType("removedFromShoppingList");
+
+
+      
     });
   };
 
