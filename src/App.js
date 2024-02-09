@@ -104,7 +104,8 @@ setToastType("addedToShoppingList");
     </html>
   `);
   printWindow.document.close();
-
+  // Trigger the browser's print dialog
+  printWindow.print();
 
 };
 
